@@ -1,4 +1,9 @@
 let path = require('path');
+let DonePlugin = require('./plugins/DonePlugin');
+let AsyncPlugin = require('./plugins/AsyncPlugin');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+let FileListPlugin = require('./plugins/FileListPlugin');
+
 module.exports = {
     mode: 'development',
     entry: './src/index.js',
@@ -19,6 +24,10 @@ module.exports = {
                 test: /\.jpg$/,
                 use: ['file-loader']
             }, */
+            {
+                test: /\.less$/,
+                use: ['style-loader', 'css-loader', 'less-loader']
+            },
             {
                 test: /\.jpg$/,
                 use: {
@@ -63,5 +72,13 @@ module.exports = {
             } */
 
         ]
-    }
+    },
+    plugins: [
+        new DonePlugin(),
+        new AsyncPlugin(),
+        new HtmlWebpackPlugin(),
+        new FileListPlugin({
+            filename:'list.md'
+        })
+    ]
 }
