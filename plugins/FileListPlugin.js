@@ -3,6 +3,7 @@ class FileListPlugin {
     this.filename = filename
   }
   apply(compiler) {
+    // 这里必须使用同步钩子，tap 不能用 tapAsync
     compiler.hooks.emit.tap('FileListPlugin', (compilation) => {
       // console.log(compilation.assets)
       let assets = compilation.assets;
