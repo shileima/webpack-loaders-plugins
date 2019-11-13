@@ -3,6 +3,9 @@ let DonePlugin = require('./plugins/DonePlugin');
 let AsyncPlugin = require('./plugins/AsyncPlugin');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let FileListPlugin = require('./plugins/FileListPlugin');
+let MiniCssExtractPlugin = require('mini-css-extract-plugin');
+let InlineSourcePlugin = require('./plugins/InlineSourcePlugin');
+
 
 module.exports = {
     mode: 'development',
@@ -11,7 +14,7 @@ module.exports = {
         filename: 'build.js',
         path: path.resolve(__dirname, 'dist')
     },
-    watch: true,
+    watch: false,
     resolveLoader: {
         /* alias: {
             loader1: path.resolve(__dirname, "loaders", "loader1")
@@ -24,6 +27,10 @@ module.exports = {
                 test: /\.jpg$/,
                 use: ['file-loader']
             }, */
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            },
             {
                 test: /\.less$/,
                 use: ['style-loader', 'css-loader', 'less-loader']
@@ -78,7 +85,14 @@ module.exports = {
         new AsyncPlugin(),
         new HtmlWebpackPlugin(),
         new FileListPlugin({
-            filename:'list.md'
+            filename: 'list.md'
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'main.css'
+        }),
+        /* 用途：将link和script外链文件标签改成内链style和script */
+        new InlineSourcePlugin({
+            match: /\.(js|css)/
         })
     ]
 }
